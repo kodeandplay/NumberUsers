@@ -21,7 +21,15 @@
     list.id = 'list';
     for(var code in data) {
       var elem = document.createElement('li');
-      elem.innerHTML = '<span>' + code + '</span> <span>' + data[code]['count'] + '</span>';
+      var html = '<span>' + code + '</span> <span>' + data[code]['count'] + '</span>';
+      axios.get(code['flag'])
+	.then(function(response) {
+	  console.log(response.data);
+	})
+	.catch(function(err) {
+	  console.log('err:', err);
+	});
+      elem.innerHTML = html;
       list.appendChild(elem);
     }
     document.body.appendChild(list);
