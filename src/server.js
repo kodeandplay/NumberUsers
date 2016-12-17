@@ -21,6 +21,7 @@ const updateCount = (ip) => {
   let idx = ip.lastIndexOf(':');
   ip = ip.substr(idx+1);
   address[ip] = (address[ip] || 0) + 1;
+  console.log('ip:', ip);
   getCountry(ip);
 }
 
@@ -42,6 +43,7 @@ const getCountry = (ip) => {
   axios.get(`http://ipinfo.io/${ip}/json`)
     .then(response => {
       let countryCode = response.data.country;
+      console.log('countryCode:', countryCode);
       axios.get(`https://restcountries.eu/rest/v1/alpha/${countryCode}`)
 	.then(response => {
 	  console.log('country code data:', response.data);
