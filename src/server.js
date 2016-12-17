@@ -52,11 +52,11 @@ const getCountry = (ip) => {
 	  console.log(counts);
 	  if(code in counts) {
 	    counts[code]['count']++;
+	    io.emit('updateCount', counts);
 	  } else {
 	    counts[code] = { count: 1 }
+	    getFlag(code, name);
 	  } 
-	  console.log('----------');
-	  getFlag(code, name);
 	});
     })
     .catch(error => {
