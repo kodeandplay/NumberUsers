@@ -24,7 +24,8 @@ const updateCount = (ip) => {
 }
 
 const getFlag = (cntry) => {
-  gis(`${cntry}+flag`).then(results => {
+  let query = `${cntry}+flag`;
+  gis(query).then(results => {
       console.log(results[0]);
     })
     .catch(error => {
@@ -42,7 +43,9 @@ const getCountry = (ip) => {
 	  let code = response.data.alpha3Code
 	  let name = response.date.name.replace(/ /g, '+');
 	  counts[code] = (counts[code] || 0) + 1; 
-	  getFlag(code + '+' + name);
+	  let query = code + '+' + name;
+	  console.log('query:', query);
+	  getFlag(query);
 	});
       //country[cntry] = (country[cntry] || 0) + 1;
       //getFlag(cntry);
