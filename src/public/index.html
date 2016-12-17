@@ -15,8 +15,10 @@
   var socket = io();
   socket.on('updateCount', function(data) {
     console.log('updateCount:', data);
-
     var list = document.getElementById('list');
+    while(list.firstChild) { 
+      list.removeChild(list.firstChild);
+    }
     for(var code in data) {
       var elem = document.createElement('li');
       elem.innerHTML = '<span>' + code + '</span> <span>' + data[code]['count'] + '</span>';
