@@ -1,5 +1,6 @@
 import express from 'express';
 import socketio from 'socket.io';
+import axios from 'axios';
 
 const app = express();
 
@@ -13,11 +14,25 @@ const io = socketio(server);
 
 const address = {};
 
-app.get('/', (req, res) => {
-  let ip = req.ip;
+const updateCount = (ip) => {
   let idx = ip.lastIndexOf(':');
   ip = ip.substr(idx+1);
   address[ip] = (address[ip] || 0) + 1;
+  getCountry(ip);
+}
+
+const getCountry = (ip) => {
+  axios.get(`http://ipinfo.io/${ip}/json`)
+    .then(response => {
+      console.log("response:", response);
+    })
+    .catch(error => {
+      console.log("error:", error);
+    });
+}
+
+app.get('/', (req, res) => {
+  updateCount(req.ip);
   res.sendFile(__dirname + '/public/index.html');
 });
 
