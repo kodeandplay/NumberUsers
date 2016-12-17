@@ -79,9 +79,14 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('new connection', socket.handshake.address);
+  console.log('id:', socket.id);
   updateCount(socket.id, socket.handshake.address);
   socket.on('disconnect', () => {
-    counts[id2Code[socket.id]].count -= 1;
+    let code = id2Code[socket.id];
+    console.log('code:', code);
+    console.log(counts);
+    console.log(id2Code);
+    counts[code].count -= 1;
     io.emit(UPDATE, counts);
     console.log('connection closed', socket.id);
   });  
