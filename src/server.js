@@ -70,7 +70,7 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
-  console.log('new connection');
+  console.log('new connection', socket.handshake.address);
   socket.on('disconnect', () => {
     console.log('connection closed');
   });  
