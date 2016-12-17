@@ -50,9 +50,11 @@ const getCountry = (ip) => {
 	  console.log('code:', code);
 	  console.log('name:', name);
 	  console.log(counts);
-	  counts[code] = {
-	      count: (counts[code]['count'] || 0) + 1
-	  }; 
+	  if(code in counts) {
+	    counts[code]['count']++;
+	  } else 
+	    counts[code] = { count: 1 }
+	  } 
 	  console.log('----------');
 	  getFlag(code, name);
 	});
