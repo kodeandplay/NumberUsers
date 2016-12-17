@@ -87,6 +87,7 @@ io.on('connection', (socket) => {
     console.log(counts);
     console.log(id2Code);
     counts[code].count -= 1;
+    delete id2Code[socket.id];
     io.emit(UPDATE, counts);
     console.log('connection closed', socket.id);
   });  
