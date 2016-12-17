@@ -2,9 +2,11 @@ import express from 'express';
 import socketio from 'socket.io';
 import axios from 'axios';
 import gis from 'g-image-search';
+import path from 'path';
 
 const app = express();
 
+app.use(express.static(path.join(__dirname, 'public')));
 app.set('port', process.env.PORT || 3005);
 
 const server = app.listen(app.get('port'), () => {
@@ -60,7 +62,7 @@ const getCountry = (ip) => {
 
 app.get('/', (req, res) => {
   updateCount(req.ip);
-  res.sendFile(__dirname + '/public/index.html');
+  res.sendFile('./public/index.html');
 });
 
 io.on('connection', (socket) => {
