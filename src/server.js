@@ -20,7 +20,6 @@ const counts = {};
 const updateCount = (ip) => {
   let idx = ip.lastIndexOf(':');
   ip = ip.substr(idx+1);
-  address[ip] = (address[ip] || 0) + 1;
   console.log('ip:', ip);
   getCountry(ip);
 }
