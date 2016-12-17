@@ -61,7 +61,7 @@ const getCountry = (ip) => {
 
 app.get('/', (req, res) => {
   updateCount(req.ip);
-  res.sendFile('./public/index.html');
+  res.sendFile(path.join(__dirname,'public','index.html'));
 });
 
 io.on('connection', (socket) => {
