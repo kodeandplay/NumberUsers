@@ -1,7 +1,7 @@
 import express from 'express';
 import socketio from 'socket.io';
 import axios from 'axios';
-import cheerio from 'cheerio';
+import fisl from 'first-image-search-load';
 
 const app = express();
 
@@ -24,14 +24,10 @@ const updateCount = (ip) => {
 }
 
 const getFlag = (cntry) => {
-  let url = `https://www.google.com/search?q=${cntry}+flag+image`;
-  console.log(`url: ${url}`);
-  axios.get(url)
-    .then(response => {
-      console.log('response.data:', response.data);
-      let $ = cheerio.load(response.data);
-      let image = $('#jjjjjjjuid_0');
-      console.log('image:', image);
+  let url = `https://www.google.com/search?q=country+${cntry}+flag+image`;
+  fisl.getFirstImageURL(url)
+    .then(function(imgUrl) {
+      console.log(imgUrl);
     })
     .catch(error => {
       console.log('error:', error);
