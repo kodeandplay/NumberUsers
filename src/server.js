@@ -24,6 +24,7 @@ const updateCount = (ip) => {
 }
 
 const getFlag = (cntry) => {
+  cntry = cntry.replace(/ /g, '+');
   let url = `https://www.google.com/search?q=country+${cntry}+flag+image`;
   console.log('url:', url);
   fisl.getFirstImageURL(url)
