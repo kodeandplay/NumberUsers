@@ -52,7 +52,7 @@ const getCountry = (ip) => {
 	  console.log(counts);
 	  if(code in counts) {
 	    counts[code]['count']++;
-	  } else 
+	  } else {
 	    counts[code] = { count: 1 }
 	  } 
 	  console.log('----------');
