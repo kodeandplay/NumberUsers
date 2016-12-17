@@ -24,7 +24,6 @@ const updateCount = (ip) => {
 }
 
 const getFlag = (cntry) => {
-  cntry = cntry.replace(/ /g, '+');
   let url = `https://www.google.com/search?q=country+${cntry}+flag`;
   console.log('url:', url);
   fisl.getFirstImageURL(url)
@@ -43,7 +42,7 @@ const getCountry = (ip) => {
       axios.get(`https://restcountries.eu/rest/v1/alpha/${countryCode}`)
 	.then(response => {
 	  console.log('country code data:', response.data);
-	  let country = response.data.name
+	  let country = response.data.alpha3Code
 	  counts[country] = (counts[country] || 0) + 1; 
 	  getFlag(country);
 	});
