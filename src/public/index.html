@@ -21,7 +21,7 @@
     list.id = 'list';
     for(var code in data) {
       var elem = document.createElement('li');
-      var html = '<img style="list-style-type:none;padding:0' width="100" src="' + data[code]['flag'] + '" /><br/>';
+      var html = '<img style="list-style-type:none;padding:0" width="100" src="' + data[code]['flag'] + '" /><br/>';
       html += '<span>' + code + '</span> <span>' + data[code]['count'] + '</span>';
       elem.innerHTML = html;
       list.appendChild(elem);
