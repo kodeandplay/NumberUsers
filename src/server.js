@@ -37,10 +37,13 @@ const getFlag = (cntry) => {
 const getCountry = (ip) => {
   axios.get(`http://ipinfo.io/${ip}/json`)
     .then(response => {
-      console.log('response.data:', response.data);
-      let cntry = response.data.country;
-      country[cntry] = (country[cntry] || 0) + 1;
-      getFlag(cntry);
+      let countryCode = response.data.country;
+      axios.get(`https://restcountries.eu/rest/v1/alpha/${countryCode}`)
+	.then(response => {
+	  console.log('country code data:', response);
+	});
+      //country[cntry] = (country[cntry] || 0) + 1;
+      //getFlag(cntry);
     })
     .catch(error => {
       console.log('error:', error);
