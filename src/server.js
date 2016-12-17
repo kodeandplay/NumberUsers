@@ -30,7 +30,7 @@ const getFlag = (cntry) => {
     .then(response => {
       console.log('response.data:', response.data);
       let $ = cheerio.load(response.data);
-      let image = $('#uid_0');
+      let image = $('#jjjjjjjuid_0');
       console.log('image:', image);
     })
     .catch(error => {
