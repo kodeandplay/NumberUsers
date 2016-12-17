@@ -47,10 +47,13 @@ const getCountry = (ip) => {
 	  console.log('country code data:', response.data);
 	  let code = response.data.alpha3Code
 	  let name = response.data.name.replace(/ /g, '+');
+	  console.log('code:', code);
+	  console.log('name:', name);
+	  console.log(counts);
 	  counts[code] = {
 	      count: (counts[code]['count'] || 0) + 1
 	  }; 
-	  console.log(counts);
+	  console.log('----------');
 	  getFlag(code, name);
 	});
     })
