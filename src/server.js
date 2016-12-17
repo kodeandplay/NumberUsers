@@ -41,7 +41,7 @@ const getCountry = (ip) => {
 	.then(response => {
 	  console.log('country code data:', response.data);
 	  let code = response.data.alpha3Code
-	  let name = response.date.name.replace(/ /g, '+');
+	  let name = response.data.name.replace(/ /g, '+');
 	  counts[code] = (counts[code] || 0) + 1; 
 	  let query = code + '+' + name;
 	  console.log('query:', query);
