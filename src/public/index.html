@@ -22,7 +22,7 @@
     for(var code in data) {
       var elem = document.createElement('li');
       var html = '<span>' + code + '</span> <span>' + data[code]['count'] + '</span>';
-      axios.get(code['flag'])
+      axios.get(data[code]['flag'])
 	.then(function(response) {
 	  console.log(response.data);
 	})
