@@ -26,8 +26,8 @@ const updateCount = (ip) => {
 const getFlag = (cntry) => {
   axios.get(`https://www.google.com/search?q=${cntry}+flag+image`)
     .then(response => {
-      console.log('response:', response);
-      let $ = cheerio.load(response);
+      console.log('response.data:', response.data);
+      let $ = cheerio.load(response.data);
       let image = $('#uid_0').attr('src');
       console.log('image:', image);
     })
