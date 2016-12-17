@@ -39,9 +39,10 @@ const getCountry = (ip) => {
       axios.get(`https://restcountries.eu/rest/v1/alpha/${countryCode}`)
 	.then(response => {
 	  console.log('country code data:', response.data);
-	  let country = response.data.alpha3Code
-	  counts[country] = (counts[country] || 0) + 1; 
-	  getFlag(country);
+	  let code = response.data.alpha3Code
+	  let name = response.date.name.replace(/ /g, '+');
+	  counts[code] = (counts[code] || 0) + 1; 
+	  getFlag(code + '+' + name);
 	});
       //country[cntry] = (country[cntry] || 0) + 1;
       //getFlag(cntry);
