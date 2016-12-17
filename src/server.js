@@ -15,7 +15,6 @@ const server = app.listen(app.get('port'), () => {
 
 const io = socketio(server);
 
-const address = {};
 const counts = {};
 
 const updateCount = (ip) => {
@@ -31,6 +30,7 @@ const getFlag = (code, name) => {
   gis(query).then(results => {
       console.log(results[0]);
       counts[code].flag = results[0];
+      console.log('counts:', counts);
       io.emit('updateCount', counts);
     })
     .catch(error => {
@@ -67,7 +67,6 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   console.log('new connection');
-  console.log(address);
   socket.on('disconnect', () => {
     console.log('connection closed');
   });  
