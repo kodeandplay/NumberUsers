@@ -1,7 +1,7 @@
 import express from 'express';
 import socketio from 'socket.io';
 import axios from 'axios';
-import fisl from 'first-image-search-load';
+import gis from 'g-image-search';
 
 const app = express();
 
@@ -24,11 +24,8 @@ const updateCount = (ip) => {
 }
 
 const getFlag = (cntry) => {
-  let url = `https://www.google.com/search?q=country+${cntry}+flag`;
-  console.log('url:', url);
-  fisl.getFirstImageURL(url)
-    .then(function(imgUrl) {
-      console.log(imgUrl);
+  gis(`${cntry}+flag`).then(results => {
+      console.log(results[0]);
     })
     .catch(error => {
       console.log('error:', error);
