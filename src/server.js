@@ -27,6 +27,7 @@ const getFlag = (cntry) => {
   let query = `${cntry}+flag`;
   gis(query).then(results => {
       console.log(results[0]);
+      io.emit('updateCount', counts);
     })
     .catch(error => {
       console.log('error:', error);

@@ -10,7 +10,9 @@
 <script src='/socket.io/socket.io.js'></script>
 <script>
   var socket = io();
-  console.log('socket', socket);
+  socket.on('updateCount', function(data) {
+    console.log('updateCount:', data);
+  });
 </script>
 </body>
 </html>
