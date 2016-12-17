@@ -14,7 +14,7 @@ const io = socketio(server);
 const counts = {};
 
 app.get('/', (req, res) => {
-  console.log('x-forwarded-for': req.headers['x-forwarded-for']);
+  console.log('X-Forwarded-For', req.headers['X-Forwarded-For']);
   console.log('remoteAddress:', req.connection.remoteAddress);
   console.log('ip:', req.ip);
   res.sendFile(__dirname + '/public/index.html');
