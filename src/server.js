@@ -14,7 +14,7 @@ const server = app.listen(app.get('port'), () => {
 const io = socketio(server);
 
 const address = {};
-const country = {};
+const counts = {};
 
 const updateCount = (ip) => {
   let idx = ip.lastIndexOf(':');
@@ -40,7 +40,10 @@ const getCountry = (ip) => {
       let countryCode = response.data.country;
       axios.get(`https://restcountries.eu/rest/v1/alpha/${countryCode}`)
 	.then(response => {
-	  console.log('country code data:', response);
+	  console.log('country code data:', response.data);
+	  let country = response.data.name;
+	  counts[country] = (counts[country] || 0) + 1; 
+	  getFlag(country);
 	});
       //country[cntry] = (country[cntry] || 0) + 1;
       //getFlag(cntry);
