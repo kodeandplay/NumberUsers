@@ -11,18 +11,19 @@ const server = app.listen(app.get('port'), () => {
 
 const io = socketio(server);
 
-const counts = {};
+const address = {};
 
 app.get('/', (req, res) => {
-  console.log('X-Forwarded-For', req.headers['X-Forwarded-For']);
-  console.log('remoteAddress:', req.connection.remoteAddress);
-  console.log('ip:', req.ip);
+  let ip = req.ip;
+  let idx = ip.lastIndexOf(':');
+  ip = ip.substr(idx+1);
+  address[ip] = (address[ip] || 0) + 1;
   res.sendFile(__dirname + '/public/index.html');
 });
 
 io.on('connection', (socket) => {
   console.log('new connection');
-
+  console.log(address);
   socket.on('disconnect', () => {
     console.log('connection closed');
   });  
