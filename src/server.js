@@ -13,14 +13,21 @@ const server = app.listen(app.get('port'), () => {
 });
 
 const io = socketio(server);
-
+const UPDATE = 'updateCount';
+const id2Code = {};
 const counts = {};
 
-const updateCount = (ip) => {
+const cleanIP = (ip) => {
   let idx = ip.lastIndexOf(':');
   ip = ip.substr(idx+1);
   console.log('ip:', ip);
-  getCountry(ip);
+  return ip;
+}
+
+// socket id, client ip
+const updateCount = (id, ip) => {
+  ip = cleanIP(ip);
+  getCountry(id, ip);
 }
 
 const getFlag = (code, name) => {
@@ -30,14 +37,14 @@ const getFlag = (code, name) => {
       console.log(results[0]);
       counts[code].flag = results[0];
       console.log('counts:', counts);
-      io.emit('updateCount', counts);
+      io.emit(UPDATE, counts);
     })
     .catch(error => {
       console.log('error:', error);
     });
 }
 
-const getCountry = (ip) => {
+const getCountry = (id, ip) => {
   axios.get(`http://ipinfo.io/${ip}/json`)
     .then(response => {
       let countryCode = response.data.country;
@@ -47,12 +54,13 @@ const getCountry = (ip) => {
 	  console.log('country code data:', response.data);
 	  let code = response.data.alpha3Code
 	  let name = response.data.name.replace(/ /g, '+');
+	  id2Code[id] = code;
 	  console.log('code:', code);
 	  console.log('name:', name);
 	  console.log(counts);
 	  if(code in counts) {
 	    counts[code]['count']++;
-	    io.emit('updateCount', counts);
+	    io.emit(UPDATE, counts);
 	  } else {
 	    counts[code] = { count: 1 }
 	    getFlag(code, name);
@@ -65,14 +73,17 @@ const getCountry = (ip) => {
 }
 
 app.get('/', (req, res) => {
-  updateCount(req.ip);
+  // updateCount(req.ip);
   res.sendFile(path.join(__dirname,'public','index.html'));
 });
 
 io.on('connection', (socket) => {
   console.log('new connection', socket.handshake.address);
+  updateCount(socket.id, socket.handshake.address);
   socket.on('disconnect', () => {
-    console.log('connection closed');
+    counts[id2Code[socket.id]].count -= 1;
+    io.emit(UPDATE, counts);
+    console.log('connection closed', socket.id);
   });  
 
 });
