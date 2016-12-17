@@ -24,11 +24,13 @@ const updateCount = (ip) => {
 }
 
 const getFlag = (cntry) => {
-  axios.get(`https://www.google.com/search?q=${cntry}+flag+image`)
+  let url = `https://www.google.com/search?q=${cntry}+flag+image`;
+  console.log(`url: ${url}`);
+  axios.get(url)
     .then(response => {
       console.log('response.data:', response.data);
       let $ = cheerio.load(response.data);
-      let image = $('#uid_0').attr('src');
+      let image = $('#uid_0');
       console.log('image:', image);
     })
     .catch(error => {
