@@ -6,7 +6,7 @@ import path from 'path';
 
 const app = express();
 
-app.use(express.static(path.join(__dirname, 'public')));
+//app.use(express.static(path.join(__dirname, 'public')));
 app.set('port', process.env.PORT || 3005);
 
 const server = app.listen(app.get('port'), () => {
@@ -54,8 +54,6 @@ const getCountry = (ip) => {
 	  }; 
 	  getFlag(code, name);
 	});
-      //country[cntry] = (country[cntry] || 0) + 1;
-      //getFlag(cntry);
     })
     .catch(error => {
       console.log('error:', error);
