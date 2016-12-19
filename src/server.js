@@ -14,7 +14,7 @@ const server = app.listen(app.get('port'), () => {
 
 const io = socketio(server);
 const UPDATE = 'updateCount';
-const TAGET = 'target';
+const TARGET = 'target';
 const BORDERLINE = 5;
 const ip2Code = {};
 const id2Ip = {};
@@ -45,9 +45,11 @@ const getFlag = (code, name) => {
 }
 
 const checkTarget = () => {
+  console.log('checkTarget', current);
   let current = Object.keys(counts).reduce((result, key) => {
     return counts[key].count + result;
   }, 0);
+  console.log('checkTarget', current);
 
   if(current >= BORDERLINE) {
     io.emit(TARGET, `Target satisfied: ${current}`);
