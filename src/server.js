@@ -20,6 +20,7 @@ const ip2Code = {};
 const id2Ip = {};
 const counts = {};
 let targetMet = 0;
+let current = 0;
 
 const cleanIP = (ip) => {
   let idx = ip.lastIndexOf(':');
@@ -47,15 +48,17 @@ const getFlag = (code, name) => {
 }
 
 const checkTarget = () => {
-  console.log('checkTarget', current);
-  let current = Object.keys(counts).reduce((result, key) => {
+  updatedCurrent = Object.keys(counts).reduce((result, key) => {
     return counts[key].count + result;
   }, 0);
-  console.log('checkTarget', current);
+  console.log('current:', current);
 
-  if(current == BORDERLINE) {
+  if(current < BORDERLINE && updatedCurrent == BORDERLINE) {
     targetMet++;
   }
+
+  current = updatedCurrent;
+  console.log('updated current:', current);
 
   io.emit(TARGET, `Target satisfied: ${targetMet}`);
 };
