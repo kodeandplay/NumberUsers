@@ -53,7 +53,7 @@ const checkTarget = () => {
   }, 0);
   console.log('checkTarget', current);
 
-  if(current >= BORDERLINE) {
+  if(current == BORDERLINE) {
     targetMet++;
   }
 
