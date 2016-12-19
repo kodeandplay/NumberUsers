@@ -75,6 +75,7 @@ app.get('/', (req, res) => {
 });
 
 io.on('connection', (socket) => {
+  id2Ip[socket.id] = cleanIP(socket.handshake.address);
   console.log('new connection', socket.handshake.address);
   console.log('id:', socket.id);
   socket.on('disconnect', () => {
