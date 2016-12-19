@@ -19,6 +19,7 @@ const BORDERLINE = 5;
 const ip2Code = {};
 const id2Ip = {};
 const counts = {};
+let targetMet = 0;
 
 const cleanIP = (ip) => {
   let idx = ip.lastIndexOf(':');
@@ -53,9 +54,7 @@ const checkTarget = () => {
   console.log('checkTarget', current);
 
   if(current >= BORDERLINE) {
-    io.emit(TARGET, `Target satisfied: ${current}`);
-  } else {
-    io.emit(TARGET, `Target not satisfied: ${current}`);
+    io.emit(TARGET, `Target satisfied: ${++targetMet}`);
   }
 };
 
