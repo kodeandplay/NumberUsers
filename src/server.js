@@ -53,9 +53,8 @@ const checkTarget = () => {
   }, 0);
   console.log('checkTarget', current);
 
-  if(current >= BORDERLINE) {
-    io.emit(TARGET, `Target satisfied: ${++targetMet}`);
-  }
+  io.emit(TARGET, `Target satisfied: ${++targetMet}`);
+  
 };
 
 const getCountry = (ip) => {
@@ -71,8 +70,8 @@ const getCountry = (ip) => {
 	  console.log(counts);
 	  if(code in counts) {
 	    counts[code]['count']++;
-	    checkTarget();
 	    io.emit(UPDATE, counts);
+	    checkTarget();
 	  } else {
 	    counts[code] = { count: 1 }
 	    getFlag(code, name);
@@ -98,8 +97,8 @@ io.on('connection', (socket) => {
     console.log("---------------", code, "---------- DISCONNNECT");
     if(code in counts) {
       counts[code].count -= 1;
-      checkTarget();
       io.emit(UPDATE, counts);
+      checkTarget();
       console.log('connection closed', socket.id);
     }
   });  
