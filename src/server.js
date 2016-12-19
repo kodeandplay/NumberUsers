@@ -25,9 +25,9 @@ const cleanIP = (ip) => {
 }
 
 // socket id, client ip
-const updateCount = (id, ip) => {
+const updateCount = (ip) => {
   ip = cleanIP(ip);
-  getCountry(id, ip);
+  getCountry(ip);
 }
 
 const getFlag = (code, name) => {
@@ -44,7 +44,7 @@ const getFlag = (code, name) => {
     });
 }
 
-const getCountry = (id, ip) => {
+const getCountry = (ip) => {
   axios.get(`http://ipinfo.io/${ip}/json`)
     .then(response => {
       let countryCode = response.data.country;
@@ -54,7 +54,6 @@ const getCountry = (id, ip) => {
 	  console.log('country code data:', response.data);
 	  let code = response.data.alpha3Code
 	  let name = response.data.name.replace(/ /g, '+');
-	  id2Code[id] = code;
 	  console.log('code:', code);
 	  console.log('name:', name);
 	  console.log(counts);
@@ -73,22 +72,14 @@ const getCountry = (id, ip) => {
 }
 
 app.get('/', (req, res) => {
-  // updateCount(req.ip);
+  updateCount(req.ip);
   res.sendFile(path.join(__dirname,'public','index.html'));
 });
 
 io.on('connection', (socket) => {
   console.log('new connection', socket.handshake.address);
   console.log('id:', socket.id);
-  updateCount(socket.id, socket.handshake.address);
   socket.on('disconnect', () => {
-    let code = id2Code[socket.id];
-    console.log('code:', code);
-    console.log(counts);
-    console.log(id2Code);
-    counts[code].count -= 1;
-    delete id2Code[socket.id];
-    io.emit(UPDATE, counts);
     console.log('connection closed', socket.id);
   });  
 
