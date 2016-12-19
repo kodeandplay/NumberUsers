@@ -69,7 +69,7 @@ const getCountry = (ip) => {
 }
 
 app.get('/', (req, res) => {
-  let ip = cleanIP(ip);
+  let ip = cleanIP(req.ip);
   updateCount(ip);
   res.sendFile(path.join(__dirname,'public','index.html'));
 });
