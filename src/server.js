@@ -86,10 +86,12 @@ io.on('connection', (socket) => {
     let code = ip2Code[ip]
     console.log('--code', code);
     console.log('--counts:', counts);
-    counts[code].count -= 1;
-    console.log('--counts:', counts);
-    io.emit(UPDATE, counts);
-    console.log('connection closed', socket.id);
+    if(code in counts) {
+      counts[code].count -= 1;
+      console.log('--counts:', counts);
+      io.emit(UPDATE, counts);
+      console.log('connection closed', socket.id);
+    }
   });  
 
 });
