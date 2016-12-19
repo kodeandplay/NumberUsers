@@ -48,7 +48,7 @@ const getFlag = (code, name) => {
 }
 
 const checkTarget = () => {
-  updatedCurrent = Object.keys(counts).reduce((result, key) => {
+  let updatedCurrent = Object.keys(counts).reduce((result, key) => {
     return counts[key].count + result;
   }, 0);
   console.log('current:', current);
