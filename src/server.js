@@ -53,8 +53,11 @@ const checkTarget = () => {
   }, 0);
   console.log('checkTarget', current);
 
-  io.emit(TARGET, `Target satisfied: ${++targetMet}`);
-  
+  if(current >= BORDERLINE) {
+    targetMet++;
+  }
+
+  io.emit(TARGET, `Target satisfied: ${targetMet}`);
 };
 
 const getCountry = (ip) => {
