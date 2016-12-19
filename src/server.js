@@ -79,6 +79,8 @@ io.on('connection', (socket) => {
   console.log('new connection', socket.handshake.address);
   console.log('id:', socket.id);
   socket.on('disconnect', () => {
+    console.log("------------------------------ DISCONNECT");
+    console.log("------------------------------ DISCONNECT");
     let ip = id2Ip[socket.id];
     console.log('--ip', ip);
     let code = ip2Code[ip]
