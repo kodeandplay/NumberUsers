@@ -14,7 +14,8 @@ const server = app.listen(app.get('port'), () => {
 
 const io = socketio(server);
 const UPDATE = 'updateCount';
-const id2Code = {};
+const ip2Code = {};
+const id2Ip = {};
 const counts = {};
 
 const cleanIP = (ip) => {
@@ -26,7 +27,6 @@ const cleanIP = (ip) => {
 
 // socket id, client ip
 const updateCount = (ip) => {
-  ip = cleanIP(ip);
   getCountry(ip);
 }
 
@@ -34,7 +34,6 @@ const getFlag = (code, name) => {
   let query = code + '+' + name + '+flag';
   console.log('query:', query);
   gis(query).then(results => {
-      console.log(results[0]);
       counts[code].flag = results[0];
       console.log('counts:', counts);
       io.emit(UPDATE, counts);
@@ -51,11 +50,9 @@ const getCountry = (ip) => {
       console.log('countryCode:', countryCode);
       axios.get(`https://restcountries.eu/rest/v1/alpha/${countryCode}`)
 	.then(response => {
-	  console.log('country code data:', response.data);
 	  let code = response.data.alpha3Code
 	  let name = response.data.name.replace(/ /g, '+');
-	  console.log('code:', code);
-	  console.log('name:', name);
+	  ip2Code[ip] = code;
 	  console.log(counts);
 	  if(code in counts) {
 	    counts[code]['count']++;
@@ -72,7 +69,8 @@ const getCountry = (ip) => {
 }
 
 app.get('/', (req, res) => {
-  updateCount(req.ip);
+  let ip = cleanIP(ip);
+  updateCount(ip);
   res.sendFile(path.join(__dirname,'public','index.html'));
 });
 
@@ -80,6 +78,12 @@ io.on('connection', (socket) => {
   console.log('new connection', socket.handshake.address);
   console.log('id:', socket.id);
   socket.on('disconnect', () => {
+    let ip = id2Ip[socket.id];
+    let code = ip2Code[ip]
+    console.log('--counts:', counts);
+    counts[code].count -= 1;
+    console.log('--counts:', counts);
+    io.emit(UPDATE, counts);
     console.log('connection closed', socket.id);
   });  
 
