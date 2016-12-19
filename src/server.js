@@ -60,7 +60,6 @@ const getCountry = (id, ip) => {
 	  console.log(counts);
 	  if(code in counts) {
 	    counts[code]['count']++;
-	    delete counts['USA'];
 	    io.emit(UPDATE, counts);
 	  } else {
 	    counts[code] = { count: 1 }
