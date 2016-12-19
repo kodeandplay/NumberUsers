@@ -84,6 +84,7 @@ io.on('connection', (socket) => {
     let ip = id2Ip[socket.id];
     console.log('--ip', ip);
     let code = ip2Code[ip]
+    console.log("---------------", code, "---------- DISCONNNECT");
     console.log('--code', code);
     console.log('--counts:', counts);
     if(code in counts) {
