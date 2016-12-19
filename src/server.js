@@ -79,7 +79,9 @@ io.on('connection', (socket) => {
   console.log('id:', socket.id);
   socket.on('disconnect', () => {
     let ip = id2Ip[socket.id];
+    console.log('--ip', ip);
     let code = ip2Code[ip]
+    console.log('--code', code);
     console.log('--counts:', counts);
     counts[code].count -= 1;
     console.log('--counts:', counts);
