@@ -14,6 +14,8 @@ const server = app.listen(app.get('port'), () => {
 
 const io = socketio(server);
 const UPDATE = 'updateCount';
+const TAGET = 'target';
+const BORDERLINE = 5;
 const ip2Code = {};
 const id2Ip = {};
 const counts = {};
@@ -35,13 +37,24 @@ const getFlag = (code, name) => {
   console.log('query:', query);
   gis(query).then(results => {
       counts[code].flag = results[0];
-      console.log('counts:', counts);
       io.emit(UPDATE, counts);
     })
     .catch(error => {
       console.log('error:', error);
     });
 }
+
+const checkTarget = () => {
+  let current = Object.keys(counts).reduce((result, key) => {
+    return counts[key].count + result;
+  }, 0);
+
+  if(current >= BORDERLINE) {
+    io.emit(TARGET, `Target satisfied: ${current}`);
+  } else {
+    io.emit(TARGET, `Target not satisfied: ${current}`);
+  }
+};
 
 const getCountry = (ip) => {
   axios.get(`http://ipinfo.io/${ip}/json`)
@@ -56,6 +69,7 @@ const getCountry = (ip) => {
 	  console.log(counts);
 	  if(code in counts) {
 	    counts[code]['count']++;
+	    checkTarget();
 	    io.emit(UPDATE, counts);
 	  } else {
 	    counts[code] = { count: 1 }
@@ -68,7 +82,7 @@ const getCountry = (ip) => {
     });
 }
 
-app.get('/', (req, res) => {
+app.get('/', (req, res) => { 
   let ip = cleanIP(req.ip);
   updateCount(ip);
   res.sendFile(path.join(__dirname,'public','index.html'));
@@ -76,20 +90,13 @@ app.get('/', (req, res) => {
 
 io.on('connection', (socket) => {
   id2Ip[socket.id] = cleanIP(socket.handshake.address);
-  console.log('new connection', socket.handshake.address);
-  console.log('id:', socket.id);
   socket.on('disconnect', () => {
-    console.log("------------------------------ DISCONNECT");
-    console.log("------------------------------ DISCONNECT");
     let ip = id2Ip[socket.id];
-    console.log('--ip', ip);
     let code = ip2Code[ip]
     console.log("---------------", code, "---------- DISCONNNECT");
-    console.log('--code', code);
-    console.log('--counts:', counts);
     if(code in counts) {
       counts[code].count -= 1;
-      console.log('--counts:', counts);
+      checkTarget();
       io.emit(UPDATE, counts);
       console.log('connection closed', socket.id);
     }
