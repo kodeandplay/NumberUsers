@@ -37,6 +37,7 @@ const getFlag = (code, name) => {
   console.log('query:', query);
   gis(query).then(results => {
       counts[code].flag = results[0];
+      checkTarget();
       io.emit(UPDATE, counts);
     })
     .catch(error => {
